@@ -1,16 +1,72 @@
-
 {% extends 'carwash/base.html' %}
+{% load static %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <style>
-    h1 {text-transform: uppercase;}
+    .header {text-transform: uppercase;}
 </style>
 
+<h1 class="header">Welcome back, {{ user.first_name }}</h1>
 
-<h1>
-    Hello World {{ user.first_name }}
-</h1>
+Current User is: {{ current_user }} <br/><br/><br/>
+
+Carwash Stuff: {{ carwash.carwash_purchased }} | {{ carwash.free_code }} <br/><br/><br/> 
+
+Carwash Purchased: {{ carwash_purchased }} <br/><br/><br/>
+
+
+    {% if carwash_purchased == 1 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 1.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 2 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 2.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 3 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 3.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 4 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 4.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 5 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 5.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 6 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 6.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 7 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 7.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 8 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 8.jpg' %}">
+        </div>
+    {% elif carwash_purchased == 9 %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 9.jpg' %}">
+        </div>
+    {% else %}
+        <div class="container">
+            <img src="{% static 'carwash/carwash 0.jpg' %}">
+        </div>
+    {% endif %}
+        
 
 
 
+
+
+
+
+
+{% else %}
+    <h1>Welcome, Please log in to see your loyalty account. If you do not have an account yet, please register one</h1>
+{% endif %}
 {% endblock %}

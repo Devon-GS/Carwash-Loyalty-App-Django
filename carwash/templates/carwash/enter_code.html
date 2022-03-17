@@ -1,0 +1,20 @@
+{% extends 'carwash/base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+    <h1>
+        PLEASE ENTER CODE
+    </h1> 
+
+
+
+
+
+
+
+
+{% else %}
+    <h1>Sorry! You must be logged in to view this page</h1>
+{% endif %}
+{% endblock %}
