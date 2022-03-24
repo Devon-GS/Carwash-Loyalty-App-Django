@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from .models import Carwash
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Carwash, LoyaltyCode
+import random
 
 def home(request):
     try:
@@ -15,11 +17,62 @@ def home(request):
         return render(request, 'carwash/home.html', {})        
 
 
-
-
-
 def enter_code(request):
-    return render(request, 'carwash/enter_code.html', {})
+    # data = LoyaltyCode.objects.get()
+    # return render(request, 'carwash/enter_code.html', {
+    #     'data': data
+    # })
+
+    if request.method == "POST":
+        # data = LoyaltyCode.objects.get()
+        data = LoyaltyCode.objects.values_list('loyalty_code', flat=True)[0]
+        entered_code = request.POST['loyalty']
+        if int(entered_code) == int(data):
+            messages.success(request, ('Code Was Entered Successfully'))
+            return redirect('enter_code')
+        else:
+            messages.success(request, ('Wrong Code, Please Try Again'))
+            return redirect('enter_code')
+    else:
+        return render(request, 'carwash/enter_code.html', {})
 
 def redeem_code(request):
-    return render(request, 'carwash/redeem_code.html', {})
+    try:
+        current_user = request.user
+        user_data = Carwash.objects.get(main_user=current_user.id)
+        carwash_purchased = int(user_data.carwash_purchased)
+        user_free_code = int(user_data.free_code)
+    except:
+        messages.success(request, ('There Was An Error Getting Your Profile, Please Try Again'))
+        return redirect('home')
+    else:
+        if carwash_purchased == 9:
+            if user_free_code == 0:
+                # Create Free Code
+                code = []
+                for i in range(0,5):
+                    x = random.randint(1,10)
+                    code.append(x)
+                code = ''.join(map(str, code))
+                code = int(code)
+
+                # Save Free Code To Database
+                user_data.free_code = code
+                user_data.save()
+            else:
+                code = user_free_code
+
+            return render(request, 'carwash/redeem_code.html', {
+            'carwash_purchased': carwash_purchased,
+            'code': code,
+            'user_free_code': user_free_code,
+            })   
+        else:
+            code = 'You still have ' + str(10 - carwash_purchased) + ' car washes to go!'
+            return render(request, 'carwash/redeem_code.html', {
+                'carwash_purchased': carwash_purchased,
+                'code': code,
+                'user_free_code': user_free_code,
+            })
+
+   

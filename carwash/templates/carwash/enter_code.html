@@ -3,16 +3,24 @@
 {% block content %}
 {% if user.is_authenticated %}
 
-    <h1>
-        PLEASE ENTER CODE
-    </h1> 
+    <h1>PLEASE ENTER CODE</h1> 
 
+    <form action="" method="POST">
+        {% csrf_token %}
 
+            <div class="mb-3">
+              <label for="Enter Code" class="form-label">Enter Loyalty Code</label>
+              <input type="text" class="form-control" name="loyalty">
+            </div>         
 
+        <input type="submit" value="Submit" class="btn btn-secondary">
+    </form>
 
+{{ data }} <br/><br/><br/>
 
+{{ info }}<br/><br/><br/>
 
-
+{{ entered_code }}
 
 {% else %}
     <h1>Sorry! You must be logged in to view this page</h1>
