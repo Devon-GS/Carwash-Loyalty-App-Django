@@ -18,23 +18,37 @@ def home(request):
 
 
 def enter_code(request):
-    # data = LoyaltyCode.objects.get()
-    # return render(request, 'carwash/enter_code.html', {
-    #     'data': data
-    # })
-
     if request.method == "POST":
-        # data = LoyaltyCode.objects.get()
+        current_user = request.user
+        user_data = Carwash.objects.get(main_user=current_user.id)
+        carwash = int(user_data.carwash_purchased)
+        used_codes = int(user_data.used_codes)
+
+
         data = LoyaltyCode.objects.values_list('loyalty_code', flat=True)[0]
         entered_code = request.POST['loyalty']
+
         if int(entered_code) == int(data):
-            messages.success(request, ('Code Was Entered Successfully'))
-            return redirect('enter_code')
+            if used_codes == int(entered_code):
+                messages.success(request, ('Sorry, That Code Was Already Used'))
+                return redirect('enter_code')
+            else:
+                # Add code to used codes
+                user_data.used_codes = entered_code
+                user_data.save()
+
+                # Add one carwash to carwashs purchased
+                user_data.carwash_purchased = carwash + 1
+                user_data.save()
+
+                messages.success(request, ('Code Was Entered Successfully'))
+                return redirect('enter_code')
         else:
             messages.success(request, ('Wrong Code, Please Try Again'))
             return redirect('enter_code')
     else:
         return render(request, 'carwash/enter_code.html', {})
+
 
 def redeem_code(request):
     try:

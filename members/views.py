@@ -36,7 +36,7 @@ def register_user(request):
             login(request, user)
             
             # create User Carwash Profile
-            user_profile = Carwash(carwash_purchased=0, free_code=0, main_user=request.user)
+            user_profile = Carwash(carwash_purchased=0, free_code=0, used_codes=0, main_user=request.user)
             user_profile.save()
 
             messages.success(request, ('Registration Successful!'))
