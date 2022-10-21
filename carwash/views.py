@@ -8,6 +8,7 @@ def home(request):
         current_user = request.user
         carwash = Carwash.objects.get(main_user=current_user.id)
         carwash_purchased = int(carwash.carwash_purchased)
+
         return render(request, 'carwash/home.html', {
             'carwash': carwash,
             'current_user': current_user,
@@ -18,6 +19,13 @@ def home(request):
 
 
 def enter_code(request):
+    current_user = request.user
+    user_data = Carwash.objects.get(main_user=current_user.id)
+    carwash = int(user_data.carwash_purchased)
+    used_codes = int(user_data.used_codes)
+    data = list(LoyaltyCode.objects.values_list('loyalty_code', flat=True))
+
+    
     if request.method == "POST":
         current_user = request.user
         user_data = Carwash.objects.get(main_user=current_user.id)
@@ -25,29 +33,35 @@ def enter_code(request):
         used_codes = int(user_data.used_codes)
 
 
-        data = LoyaltyCode.objects.values_list('loyalty_code', flat=True)[0]
+        data = list(LoyaltyCode.objects.values_list('loyalty_code', flat=True))
         entered_code = request.POST['loyalty']
 
-        if int(entered_code) == int(data):
-            if used_codes == int(entered_code):
-                messages.success(request, ('Sorry, That Code Was Already Used'))
-                return redirect('enter_code')
+        for x in data:
+            if int(entered_code) == int(x):
+                if used_codes == int(entered_code):
+                    messages.success(request, ('Sorry, That Code Was Already Used'))
+                    return redirect('enter_code')
+                else:
+                    # Add code to used codes
+                    # user_data.used_codes = entered_code
+                    # user_data.save()
+                    j = Carwash(used_codes=entered_code)
+                    j.save()
+
+                    # Add one carwash to carwashs purchased
+                    user_data.carwash_purchased = carwash + 1
+                    user_data.save()
+
+                    messages.success(request, ('Code Was Entered Successfully'))
+                    return redirect('enter_code')
             else:
-                # Add code to used codes
-                user_data.used_codes = entered_code
-                user_data.save()
-
-                # Add one carwash to carwashs purchased
-                user_data.carwash_purchased = carwash + 1
-                user_data.save()
-
-                messages.success(request, ('Code Was Entered Successfully'))
+                messages.success(request, ('Wrong Code, Please Try Again'))
                 return redirect('enter_code')
-        else:
-            messages.success(request, ('Wrong Code, Please Try Again'))
-            return redirect('enter_code')
     else:
-        return render(request, 'carwash/enter_code.html', {})
+        return render(request, 'carwash/enter_code.html', {
+            'data': data,
+            'used_codes': used_codes,
+        })
 
 
 def redeem_code(request):
