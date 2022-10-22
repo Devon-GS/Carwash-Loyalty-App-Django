@@ -16,11 +16,17 @@
         <input type="submit" value="Submit" class="btn btn-secondary">
     </form>
 
-{{ data }} <br/><br/><br/>
+Data: {{ data }} <br/><br/><br/>
 
-{{ used_codes }}<br/><br/><br/>
+Used Codes: {{ used_codes }}<br/><br/><br/>
 
-{{ entered_code }}
+Loop:
+
+{% for x in data %}
+    {% for y in x.loyalty_code %}
+        {{ y }}
+    {% endfor %}
+{% endfor %}
 
 {% else %}
     <h1>Sorry! You must be logged in to view this page</h1>

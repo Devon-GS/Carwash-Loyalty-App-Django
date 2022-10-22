@@ -16,5 +16,5 @@ class Carwash(models.Model):
 class LoyaltyCode(models.Model):
     loyalty_code = ArrayField(models.TextField(), blank=True, null=True, default=0)
 
-    def __str__(self):
-        return self.loyalty_code
+    # def __str__(self):
+    #     return list(self.loyalty_code)
