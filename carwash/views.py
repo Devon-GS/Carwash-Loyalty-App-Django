@@ -50,10 +50,7 @@ def enter_code(request):
             messages.success(request, ('Wrong Code, Please Try Again'))
             return redirect('enter_code')
     else:
-        return render(request, 'carwash/enter_code.html', {
-            'data': data,
-            'used_codes': used_codes,
-        })
+        return render(request, 'carwash/enter_code.html', {})
 
 
 def redeem_code(request):
@@ -94,5 +91,8 @@ def redeem_code(request):
                 'code': code,
                 'user_free_code': user_free_code,
             })
+
+def reset(request):
+    return render(request, 'carwash/home.html', {})
 
    

@@ -14,10 +14,11 @@ Carwash Purchased: {{ carwash_purchased }} <br/><br/><br/>
 
 Free Code: {{ code }} <br/><br/><br/>
 
-Already Free Code: {{ user_free_code }}
+Already Free Code: {{ user_free_code }}<br/><br/>
 
+-----------------------------------------------------------------<br/><br/>
 
-
+<a class="btn btn-primary confirm-delete" href="{% url 'reset' %}" role="button">Redeem Code</a>
 
 {% else %}
     <h1>Sorry! You must be logged in to view this page</h1>

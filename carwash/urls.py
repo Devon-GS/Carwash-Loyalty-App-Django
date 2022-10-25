@@ -5,4 +5,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('enter_code', views.enter_code, name='enter_code'),
     path('redeem_code', views.redeem_code, name='redeem_code'),
+    path('reset', views.reset, name='reset'),
 ]

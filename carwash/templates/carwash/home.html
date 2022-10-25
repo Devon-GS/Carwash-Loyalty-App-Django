@@ -15,6 +15,8 @@ Carwash Stuff: {{ carwash.carwash_purchased }} | {{ carwash.free_code }} <br/><b
 
 Carwash Purchased: {{ carwash_purchased }} <br/><br/><br/>
 
+--------------------------------------------------------------
+
 
     {% if carwash_purchased == 1 %}
         <div class="container">
@@ -50,9 +52,10 @@ Carwash Purchased: {{ carwash_purchased }} <br/><br/><br/>
         </div>
     {% elif carwash_purchased == 9 %}
         <div class="container">
-            <img src="{% static 'carwash/carwash 9.jpg' %}">
+            <!-- <img src="{% static 'carwash/carwash 9.jpg' %}"> -->
+            <h1>Please Claim your free Code <a href="{% url 'redeem_code' %}">Here</a></h1>
         </div>
-        <p>Please Claim your free Code Here</p>
+        
     {% else %}
         <div class="container">
             <img src="{% static 'carwash/carwash 0.jpg' %}">
