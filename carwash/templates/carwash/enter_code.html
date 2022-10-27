@@ -2,6 +2,11 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+    {% if carwash == 9 %}
+
+    <h1>Please Claim your free Code <a href="{% url 'redeem_code' %}">Here</a></h1>
+
+    {% else %}
 
     <h1>PLEASE ENTER CODE</h1> 
 
@@ -16,17 +21,16 @@
         <input type="submit" value="Submit" class="btn btn-secondary">
     </form>
 
+    {% endif %}
+
+
 Data: {{ data }} <br/><br/><br/>
 
 Used Codes: {{ used_codes }}<br/><br/><br/>
 
-Loop:
+Loop: {{ user_data.carwash_purchased }}
 
-{% for x in data %}
-    {% for y in x.loyalty_code %}
-        {{ y }}
-    {% endfor %}
-{% endfor %}
+
 
 {% else %}
     <h1>Sorry! You must be logged in to view this page</h1>
